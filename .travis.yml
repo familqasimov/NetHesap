@@ -1,0 +1,8 @@
+language: android
+android:
+  components:
+    - build-tools
+    - tools
+    - android-28
+script:
+ - chmod +x ./gradlew

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Net Hesap</string>
+    <string name="hesapla">Hesapla</string>
+    <string name="dogru">Doğru Sayısı</string>
+    <string name="yanlıs">Yanlış Sayısı</string>
+    <string name="bos">Boş Sayısı</string>
+    <string name="gecmis">Geçmişe Kaydet</string>
+    <string name="yedekle">Yedekle</string>
+</resources>
