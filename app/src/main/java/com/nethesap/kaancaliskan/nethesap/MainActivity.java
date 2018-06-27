@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     final String hata="Boş Bırakılamaz!";
     final String netyaz="Netiniz: ";
     int tespit=1;
+    StringBuilder temp=new StringBuilder();
 
 
 
@@ -38,49 +39,22 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionButton mat=findViewById(R.id.mat);
         final TextInputEditText text1=findViewById(R.id.dogru);
         final TextInputEditText text2=findViewById(R.id.yanlis);
-        final TextInputEditText bos=findViewById(R.id.bos);
-        final TextView view= findViewById(R.id.net);
+        final TextView netgoster= findViewById(R.id.net);
         final TextView netgecmis= findViewById(R.id.netgecmis);
         final Switch secgec=findViewById(R.id.secgec);
 
-        //önceden kaydedilen geçmişi dosyadan çekiyoruz
-        try
-        {
-            FileInputStream fis;
-            try {
-                fis = openFileInput(dosyaadı);
-            }catch (FileNotFoundException a){
-                a.printStackTrace();
-                mat.hide();
-                //eğer ilk açılış ise direkt floatingactionbutton gizleniyor
-                tespit=0;
-            }
-            fis=openFileInput(dosyaadı);
-            int c;
-            StringBuilder temp= new StringBuilder();
-            while ((c = fis.read()) != -1)
-            {
-                temp.append(Character.toString((char) c));
-            }
+        temp = gecmisoku(temp);
             if(tespit==1){
                 if (temp.toString().equals("")) {
                     mat.hide();
                     //eğer dosya boş ise floatingactionbutton gizleniyor
                 }
-                else
-                {
-
+                else{
                     netgecmis.setText(temp.toString());
                     //boş değilse textview a yazıyoruz
-                }}
+                }
+            }
 
-            fis.close();
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -99,24 +73,16 @@ public class MainActivity extends AppCompatActivity {
                     b="1";
                     net=0.0;
                 }
-                String d=bos.getText().toString();
-                if(d.isEmpty()){
-                    bos.setError(hata);
-                    d="1";
-                    //bu d neden hiç kullanılmadı diyorda diğerlerine demiyor, hiçbir fikrim yok...
-                    net=0.0;
-                }
                 else{
 
                     Double sayı1 = Double.parseDouble(a);
                     Double sayı2 = Double.parseDouble(b);
-                    Double sayı3 = Double.parseDouble(d);
                     //yazılanları alıyoruz
 
-                    net = sayı1 - (sayı2 + (sayı2 / 4)) - sayı3;}
+                    net = sayı1 - (sayı2 + (sayı2 / 4));}
                 //neti hesaplıyoruz
 
-                view.setText(netyaz+ net);
+                netgoster.setText(netyaz+ net);
                 //neti yazdırıyoruz
 
                 DateFormat tarihbicimi = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -138,27 +104,10 @@ public class MainActivity extends AppCompatActivity {
                     {
                         e.printStackTrace();
                     }
-                    try
-                    {
-                        FileInputStream fis;
-                        fis = openFileInput(dosyaadı);
-
-                        int c;
-                        StringBuilder temp= new StringBuilder();
-                        while ((c = fis.read()) != -1)
-                        {
-                            temp.append(Character.toString((char) c));
-                        }
+                    temp=gecmisoku(temp);
                         netgecmis.setText(temp.toString());
                         //bu blokta dosyaya yazdırdığımız sonucu okuyup textview a yazıyoruz
-                        mat.show();
-                        fis.close();
-
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }}
+                        mat.show();}
             }
         });
 
@@ -177,8 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     netgecmis.setText("");
                     text1.setText("");
                     text2.setText("");
-                    bos.setText("");
-                    view.setText("");
+                    netgoster.setText("");
                     osw.close();
                     fos.close();
                 }
@@ -188,28 +136,21 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //kullanıcıyı haberdar etmek farz
-                Snackbar.make(view, "Geçmiş silindi!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(netgoster, "Geçmiş silindi!", Snackbar.LENGTH_SHORT).show();
             }
         });
         yedek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                try {
-                    FileInputStream fis=openFileInput(dosyaadı);
-                    int c;
-                    StringBuilder temp= new StringBuilder();
-                    while ((c = fis.read()) != -1)
-                    {
-                        temp.append(Character.toString((char) c));
-                    }
+                temp=gecmisoku(temp);
 
                     if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                     {
 
                         if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                         {
-                            Snackbar.make(view,"Lütfen ayarlardan depolama iznini veriniz!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(netgoster,"Lütfen ayarlardan depolama iznini veriniz!", Snackbar.LENGTH_LONG).show();
                         }
                         else
                         {
@@ -219,14 +160,13 @@ public class MainActivity extends AppCompatActivity {
                     File dizin = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),"NetHesap");
                     File dosya=new File(dizin, dosyaadı);
 
+                try {
                     dizin.mkdirs();
-
                         FileWriter yazıcı = new FileWriter(dosya);
                         yazıcı.write(temp.toString());
                         yazıcı.flush();
                         yazıcı.close();
-
-                        Snackbar.make(view, "Yedek, Documents dosyası içine kaydedildi!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(netgoster, "Yedek, Documents dosyası içine kaydedildi!", Snackbar.LENGTH_LONG).show();
 
                 }catch (IOException e){
                     e.printStackTrace();
@@ -236,5 +176,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public StringBuilder gecmisoku (StringBuilder temp){
+        this.temp=temp;
+        temp=new StringBuilder();
+        try
+
+        {
+            FileInputStream fis;
+            fis = openFileInput(dosyaadı);
+
+            int c;
+            while ((c = fis.read()) != -1) {
+                temp.append(Character.toString((char) c));
+            }
+            fis.close();
+
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return temp;
     }
 }

@@ -10,6 +10,7 @@ local.properties
 -/.idea/libraries
 -/captures
 -.externalNativeBuild
+app/release
 
 # Compiled source #
 ###################
