@@ -44,34 +44,35 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/dogru"
-                android:layout_width="143dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:ems="6"
                 android:fontFamily="@font/googlesansmedium"
                 android:hint="@string/dogru"
                 android:inputType="number"
+                android:selectAllOnFocus="true"
                 android:singleLine="true"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/yanlis"
-                android:layout_width="143dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/googlesansmedium"
                 android:hint="@string/yanlıs"
                 android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/dogru" />
 
             <Switch
                 android:id="@+id/secgec"
@@ -82,7 +83,6 @@
                 android:fontFamily="@font/googlesansmedium"
                 android:text="@string/gecmis"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/yanlis"
                 tools:checked="true" />
@@ -94,7 +94,6 @@
                 android:fontFamily="@font/googlesansmedium"
                 android:text="@string/hesapla"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/secgec" />
 
@@ -102,34 +101,31 @@
                 android:id="@+id/net"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/googlesansmedium"
                 android:textAppearance="@android:style/TextAppearance.Material.Large"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yedek" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
             <TextView
                 android:id="@+id/netgecmis"
-                android:layout_width="0dp"
+                android:layout_width="359dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="26dp"
-                android:layout_marginStart="26dp"
                 android:fontFamily="@font/googlesansmedium"
-                app:layout_constraintBottom_toTopOf="@+id/mat"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/net"
-                app:layout_constraintVertical_chainStyle="spread_inside" />
+                app:layout_constraintTop_toBottomOf="@+id/net" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/mat"
                 android:layout_width="55dp"
                 android:layout_height="62dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:backgroundTint="@color/colorAccent"
@@ -146,9 +142,22 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/net"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buton" />
+                app:layout_constraintTop_toBottomOf="@+id/buton"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/net"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yedek"></android.support.v7.widget.AppCompatSpinner>
 
         </android.support.constraint.ConstraintLayout>
 

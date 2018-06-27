@@ -1,9 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Net Hesap</string>
     <string name="hesapla">Hesapla</string>
     <string name="dogru">Doğru Sayısı</string>
     <string name="yanlıs">Yanlış Sayısı</string>
-    <string name="bos">Boş Sayısı</string>
     <string name="gecmis">Geçmişe Kaydet</string>
     <string name="yedekle">Yedekle</string>
+    <string name="hata">Boş bırakılamaz!</string>
+    <string name="netyaz">"Sonuç: "</string>
+    <string name="gecmissilindi">Geçmiş temizlendi!</string>
+    <string name="yedekkaydedildi">Yedek, Documents klasörüne kaydedildi!</string>
+    <string name="spinnerbaşlık">Kaç yanlış 1 doğruyu götürsün?</string>
+    <string name="app_name" translatable="false">Net Hesap</string>
+    <string name="dosyaadı" translatable="false">gecmis.nh</string>
 </resources>

@@ -4,7 +4,6 @@ package com.nethesap.kaancaliskan.nethesap;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.support.annotation.Keep;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,17 +16,12 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-public class MainActivity extends AppCompatActivity {
-    @Keep
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Double net;
-    final String dosyaadı="gecmis.nh";
-    final String hata="Boş Bırakılamaz!";
-    final String netyaz="Netiniz: ";
     int tespit=1;
     StringBuilder temp=new StringBuilder();
-
-
+    int numara=4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,34 +36,38 @@ public class MainActivity extends AppCompatActivity {
         final TextView netgoster= findViewById(R.id.net);
         final TextView netgecmis= findViewById(R.id.netgecmis);
         final Switch secgec=findViewById(R.id.secgec);
+        final Spinner spinner=findViewById(R.id.spinner);
+
+        spinner.setOnItemSelectedListener(this);
+        String[] sayılar=new String[]{getString(R.string.spinnerbaşlık),"1","2","3","4 (varsayılan)","5"};
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sayılar);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
 
         temp = gecmisoku(temp);
             if(tespit==1){
                 if (temp.toString().equals("")) {
                     mat.hide();
-                    //eğer dosya boş ise floatingactionbutton gizleniyor
                 }
                 else{
                     netgecmis.setText(temp.toString());
-                    //boş değilse textview a yazıyoruz
                 }
             }
-
-
-        btn.setOnClickListener(new View.OnClickListener(){
+            btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
                 String a=text1.getText().toString();
-                //burada eğer herhangi biri boş bırakılırsa hata verilecek böylece lanet olası nullpointer dan kurtuluyacağız
                 if(a.isEmpty()){
-                    text1.setError(hata);
+                    text1.setError(getString(R.string.hata));
                     a="1";
                     net=0.0;
                 }
                 String b=text2.getText().toString();
                 if(b.isEmpty()){
-                    text2.setError(hata);
+                    text2.setError(getString(R.string.hata));
                     b="1";
                     net=0.0;
                 }
@@ -77,26 +75,21 @@ public class MainActivity extends AppCompatActivity {
 
                     Double sayı1 = Double.parseDouble(a);
                     Double sayı2 = Double.parseDouble(b);
-                    //yazılanları alıyoruz
 
-                    net = sayı1 - (sayı2 + (sayı2 / 4));}
-                //neti hesaplıyoruz
+                    net = sayı1 - (sayı2 + (sayı2 / numara));}
 
-                netgoster.setText(netyaz+ net);
-                //neti yazdırıyoruz
+                netgoster.setText(getString(R.string.netyaz)+ net);
 
                 DateFormat tarihbicimi = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 Date tarih= new Date();
-                //buradan geçmişi kaydederken kullandığımız tarihi alacağız
 
                 if(secgec.isChecked()){
                     try
                     {
-                        FileOutputStream fos=openFileOutput(dosyaadı, Context.MODE_APPEND);
+                        FileOutputStream fos=openFileOutput(getString(R.string.dosyaadı), Context.MODE_APPEND);
                         OutputStreamWriter osw = new OutputStreamWriter(fos);
                         osw.append("\n" + tarihbicimi.format(tarih) + " Net: " + net);
-                        //hesapladığımız sonucu dosyaya yazdırıyoruz
-                        //bu dosya data/data/com.kaancaliskan.nethesap/files içinde
+                        //this file is in the data/data/com.kaancaliskan.nethesap/files
                         osw.close();
                         fos.close();
                     }
@@ -106,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     temp=gecmisoku(temp);
                         netgecmis.setText(temp.toString());
-                        //bu blokta dosyaya yazdırdığımız sonucu okuyup textview a yazıyoruz
                         mat.show();}
             }
         });
@@ -119,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 mat.hide();
                 try
                 {
-                    //bu blok ise floatingactionbutton a bastığımızda ne var ne yok temizliyor
-                    FileOutputStream fos=openFileOutput(dosyaadı, Context.MODE_PRIVATE);
+                    FileOutputStream fos=openFileOutput(getString(R.string.dosyaadı), Context.MODE_PRIVATE);
                     OutputStreamWriter osw = new OutputStreamWriter(fos);
                     osw.write("");
                     netgecmis.setText("");
@@ -135,8 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                //kullanıcıyı haberdar etmek farz
-                Snackbar.make(netgoster, "Geçmiş silindi!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(netgoster, getString(R.string.gecmissilindi), Snackbar.LENGTH_SHORT).show();
             }
         });
         yedek.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                         {
-                            Snackbar.make(netgoster,"Lütfen ayarlardan depolama iznini veriniz!", Snackbar.LENGTH_LONG).show();
+                            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                         }
                         else
                         {
@@ -158,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     File dizin = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),"NetHesap");
-                    File dosya=new File(dizin, dosyaadı);
+                    File dosya=new File(dizin, getString(R.string.dosyaadı));
 
                 try {
                     dizin.mkdirs();
@@ -166,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         yazıcı.write(temp.toString());
                         yazıcı.flush();
                         yazıcı.close();
-                        Snackbar.make(netgoster, "Yedek, Documents dosyası içine kaydedildi!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(netgoster, getString(R.string.yedekkaydedildi), Snackbar.LENGTH_LONG).show();
 
                 }catch (IOException e){
                     e.printStackTrace();
@@ -184,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         {
             FileInputStream fis;
-            fis = openFileInput(dosyaadı);
+            fis = openFileInput(getString(R.string.dosyaadı));
 
             int c;
             while ((c = fis.read()) != -1) {
@@ -197,5 +187,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return temp;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        if (pos>0){
+            numara=pos;
+    }}
+    public void onNothingSelected(AdapterView<?> arg0) {
+        numara =4;
     }
 }
