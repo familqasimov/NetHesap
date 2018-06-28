@@ -11,4 +11,4 @@ This app supports between 6.0-8.1 Android versions.
 
 [![Build Status](https://travis-ci.org/hakkikaancaliskan/NetHesap.svg?branch=master)](https://travis-ci.org/hakkikaancaliskan/NetHesap)
 
-Thank you so much for icon and logo https://github.com/zularizal.
+Thank you so much for icon and logo [zularizal](https://github.com/zularizal).
