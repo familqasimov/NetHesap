@@ -14,13 +14,13 @@ import android.support.design.widget.*
 import android.view.*
 import android.widget.*
 import java.io.*
-import java.text.*
-import java.util.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private var result: Double? = 0.toDouble()
-    private var fabcheck = 1
+    private var fabCheck = 1
     private var temp = StringBuilder()
     private var divide = 4
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
 
         temp = temp.readHistory
-        if (fabcheck == 1) {
+        if (fabCheck == 1) {
             if (temp.toString() == "") {
                 fab.hide()
             } else {
@@ -49,32 +49,30 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             var a = trueEditText.text.toString()
             if (a.isEmpty()) {
                 trueEditText.error = getString(R.string.hata)
-                a = "1"
-                result = 0.0
+                a="0"
             }
             var b = falseEditText.text.toString()
             if (b.isEmpty()) {
                 falseEditText.error = getString(R.string.hata)
-                b = "1"
-                result = 0.0
-            } else {
-
-                val trueQuestions = java.lang.Double.parseDouble(a)
-                val wrongQuestions = java.lang.Double.parseDouble(b)
-
-                result = trueQuestions - (wrongQuestions + wrongQuestions / divide)
+                b="0"
             }
+
+            val trueQuestions = java.lang.Double.parseDouble(a)
+            val wrongQuestions = java.lang.Double.parseDouble(b)
+
+            result = trueQuestions - (wrongQuestions + wrongQuestions / divide)
 
             resultTextView.text=(getString(R.string.netyaz) + result!!)
 
-            val dateStyle = SimpleDateFormat("dd/MM/yyyy HH:mm")
-            val date = Date()
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+            val formatted = current.format(formatter)
 
             if (historySwitch.isChecked) {
                 try {
                     val fos = openFileOutput(getString(R.string.dosyaadı), Context.MODE_APPEND)
                     val osw = OutputStreamWriter(fos)
-                    osw.append("\n"+dateStyle.format(date)+" Net: "+result)
+                    osw.append("\n$formatted Net: $result")
                     osw.close()
                     fos.close()
 
