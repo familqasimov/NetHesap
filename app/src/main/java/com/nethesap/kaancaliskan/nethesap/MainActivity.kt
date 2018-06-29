@@ -80,8 +80,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
             if (secgec.isChecked) {
                 try {
-                    val outstring="\n"+tarihbicimi.format(tarih)+" Net: "+net
-                    File("gecmis.nh").bufferedWriter().use { out -> out.write(outstring) }
+                    val fos = openFileOutput(getString(R.string.dosyaadı), Context.MODE_APPEND)
+                    val osw = OutputStreamWriter(fos)
+                    osw.append("\n"+tarihbicimi.format(tarih)+" Net: "+net)
+                    osw.close()
+                    fos.close()
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -142,20 +145,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     fun gecmisoku(temp: StringBuilder): StringBuilder {
-
         this.temp = temp
-        val temp = StringBuilder()
-        val dizin = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "NetHesap")
-        val dosya = File(dizin, getString(R.string.dosyaadı))
-
+        temp.setLength(0)
         try {
+            val file = InputStreamReader(openFileInput(getString(R.string.dosyaadı)))
+            val br = BufferedReader(file)
+            var line = br.readLine()
+            while (line != null) {
+                temp.append(line + "\n")
+                line = br.readLine()
+            }
+            br.close()
+            file.close()
 
-            val bufferedReader: BufferedReader = dosya.bufferedReader()
-
-            val inputString = bufferedReader.use { it.readText() }
-
-            temp.append(inputString)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
