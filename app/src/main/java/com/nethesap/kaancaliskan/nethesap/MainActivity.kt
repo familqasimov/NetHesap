@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 history.text = temp.toString()
             }
         }
-        buton.setOnClickListener {
+        button.setOnClickListener {
             var a = trueEditText.text.toString()
             if (a.isEmpty()) {
                 trueEditText.error = getString(R.string.hata)
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 result = trueQuestions - (wrongQuestions + wrongQuestions / divide)
             }
 
-            netgoster.text=(getString(R.string.netyaz) + result!!)
+            resultTextView.text=(getString(R.string.netyaz) + result!!)
 
             val dateStyle = SimpleDateFormat("dd/MM/yyyy HH:mm")
             val date = Date()
@@ -97,14 +97,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 history.text = ""
                 trueEditText.setText("")
                 falseEditText.setText("")
-                netgoster.text = ""
+                resultTextView.text = ""
                 osw.close()
                 fos.close()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            Snackbar.make(netgoster, getString(R.string.gecmissilindi), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(resultTextView, getString(R.string.gecmissilindi), Snackbar.LENGTH_SHORT).show()
         }
         backup.setOnClickListener {
             temp = temp.readHistory
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 writer.write(temp.toString())
                 writer.flush()
                 writer.close()
-                Snackbar.make(netgoster, getString(R.string.yedekkaydedildi), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(resultTextView, getString(R.string.yedekkaydedildi), Snackbar.LENGTH_LONG).show()
 
             } catch (e: IOException) {
                 e.printStackTrace()
